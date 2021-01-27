@@ -1,0 +1,31 @@
+set(CMAKE_SYSTEM_NAME Android)
+set(CMAKE_ANDROID_STANDALONE_TOOLCHAIN /usr/local/share/ndk/arm-linux-androideabi-4.9)
+set(CROSS_COMPILING_ROOT /usr/local/share/ndk/arm-linux-androideabi-4.9/sysroot/usr)
+set(CMAKE_ANDROID_ARCH_ABI armeabi-v7a)
+set(CMAKE_ANDROID_ARM_NEON ON)
+#set(CMAKE_ANDROID_NDK /usr/local/share/ndk/android-ndk-r12b)
+
+#SET(CMAKE_C_COMPILER    ${ARMV7A_STANDALONE_TOOLCHAIN}/bin/arm-linux-androideabi-gcc)
+#SET(CMAKE_CXX_COMPILER  ${ARMV7A_STANDALONE_TOOLCHAIN}/bin/arm-linux-androideabi-g++)
+
+SET(CMAKE_C_FLAGS "-march=armv7-a -mfpu=neon -mfloat-abi=softfp -fPIC -fPIE -pie " CACHE STRING "" FORCE)
+SET(CMAKE_CXX_FLAGS "-std=c++11 -march=armv7-a -mfpu=neon -mfloat-abi=softfp -fPIC -fPIE -pie" CACHE STRING "" FORCE)
+
+if(NOT DEFINED CROSS_COMPILING_ROOT)
+  set(CROSS_COMPILING_ROOT $ENV{CROSS_COMPILING_ROOT})
+endif()
+
+if(NOT DEFINED CROSS_COMPILING_ROOT)
+  message(FATAL_ERROR "Missing CROSS_COMPILING_ROOT")
+elseif(NOT IS_DIRECTORY ${CROSS_COMPILING_ROOT})
+  message(FATAL_ERROR "CROSS_COMPILING_ROOT is not directory: ${CROSS_COMPILING_ROOT}")
+endif()
+
+set(CMAKE_FIND_ROOT_PATH ${CROSS_COMPILING_ROOT})
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+
+set(SYSTEM_DETAILS armeabi-v7a)
